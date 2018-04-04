@@ -25,6 +25,38 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    @IBAction func onClickReset(_ sender: Any) {
+         mainImageView.image = nil
+    }
+    
+    @IBAction func onClickSetting(_ sender: Any) {
+        
+        
+    }
+    
+    @IBAction func onClickColor(_ btn: UIButton) {
+        
+        if let color = btn.backgroundColor{
+            
+            red = color.redValue
+            green = color.greenValue
+            blue = color.blueValue
+        }
+        if btn.backgroundColor == UIColor.white {
+            
+            opacity = 1.0
+        }
+    }
+    @IBAction func onClickSave(_ sender: Any) {
+        UIGraphicsBeginImageContext(mainImageView.bounds.size)
+        mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.size.width, height: mainImageView.frame.size.height))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        let activity = UIActivityViewController(activityItems: [image!], applicationActivities: nil)
+        present(activity, animated: true, completion: nil)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = false
         
@@ -82,5 +114,12 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+}
+
+extension UIColor {
+    var redValue: CGFloat{ return CIColor(color: self).red }
+    var greenValue: CGFloat{ return CIColor(color: self).green }
+    var blueValue: CGFloat{ return CIColor(color: self).blue }
+    var alphaValue: CGFloat{ return CIColor(color: self).alpha }
 }
 
